@@ -11,16 +11,25 @@ from sensor_msgs.msg import JointState
 
 def callback(data):
     
-    print(data.position[0])
+    #print(data.position[0])
     #rospy.loginfo(rospy.get_caller_id() + 'This is the fist position', data.position[0])
-    #joint_0 = (math.degrees(data.position[0]) + 90)
-    #kit.servo[0] = joint_0
-    #time.sleep(0.5)
-    #joint_1 = (math.degrees(data.position[1]) + 90)
-    #joint_2 = (math.degrees(data.position[2]) + 90)
-    #joint_3 = (math.degrees(data.position[3]) + 90)
-    #joint_4 = (math.degrees(data.position[4]) + 90)
-    #print( joint_0 , joint_1 ,joint_2, joint_3, joint_4)
+    joint_0 = (math.degrees(data.position[0]) + 90)
+    print(joint_0)
+    kit.servo[0].angle = joint_0
+    time.sleep(0.5)
+    joint_1 = (math.degrees(data.position[1]) + 90)
+    joint_2 = (math.degrees(data.position[2]) + 90)
+    joint_3 = (math.degrees(data.position[3]) + 90)
+    joint_4 = (math.degrees(data.position[4]) + 90)
+    kit.servo[1].angle = joint_1
+    kit.servo[2].angle = joint_2
+    kit.servo[3].angle = joint_3
+    kit.servo[4].angle = joint_4
+    
+    
+    
+    
+    print( joint_0 , joint_1 ,joint_2, joint_3, joint_4)
 
 
 def listener():
