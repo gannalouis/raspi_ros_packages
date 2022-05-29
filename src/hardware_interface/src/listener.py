@@ -1,36 +1,46 @@
 #!/usr/bin/env python3
+# Software License Agreement (BSD License)
+#
+# Copyright (c) 2008, Willow Garage, Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+#  * Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above
+#    copyright notice, this list of conditions and the following
+#    disclaimer in the documentation and/or other materials provided
+#    with the distribution.
+#  * Neither the name of Willow Garage, Inc. nor the names of its
+#    contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+# Revision $Id$
+
+## Simple talker demo that listens to std_msgs/Strings published 
+## to the 'chatter' topic
 
 import rospy
-import math
-from adafruit_servokit import ServoKit
-kit = ServoKit(channels = 16)
-kit.servo[0].actuation_range = 180
-import time
 from std_msgs.msg import String
-from sensor_msgs.msg import JointState 
 
 def callback(data):
-    
-    #print(data.position[0])
-    #rospy.loginfo(rospy.get_caller_id() + 'This is the fist position', data.position[0])
-    joint_0 = (math.degrees(data.position[0]) + 90)
-    print(joint_0)
-    kit.servo[0].angle = joint_0
-    time.sleep(0.5)
-    joint_1 = (math.degrees(data.position[1]) + 90)
-    joint_2 = (math.degrees(data.position[2]) + 90)
-    joint_3 = (math.degrees(data.position[3]) + 90)
-    joint_4 = (math.degrees(data.position[4]) + 90)
-    kit.servo[1].angle = joint_1
-    kit.servo[2].angle = joint_2
-    kit.servo[3].angle = joint_3
-    kit.servo[4].angle = joint_4
-    
-    
-    
-    
-    print( joint_0 , joint_1 ,joint_2, joint_3, joint_4)
-
+    rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
 
 def listener():
 
@@ -39,9 +49,9 @@ def listener():
     # anonymous=True flag means that rospy will choose a unique
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously.
-    rospy.init_node('hardware_interface', anonymous=True)
+    rospy.init_node('listener', anonymous=True)
 
-    rospy.Subscriber('/joint_states', JointState, callback)
+    rospy.Subscriber('chatter', String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
